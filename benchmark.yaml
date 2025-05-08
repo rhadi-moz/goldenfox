@@ -1,0 +1,45 @@
+benchmark:
+  generation:
+    summarization: True
+    prompt_alignment: True
+  evaluation:
+    summarization: True
+    prompt_alignment: True
+
+run:
+  repo: 'Qwen/Qwen2.5-1.5B-Instruct-GGUF'
+  model_name:  'qwen2.5-1.5b-instruct-q8_0.gguf'
+  quantization: 'q8_0'
+
+input_data:
+    golden_path: 'golden_datasets/goldenfox_summarization_with_gpt_4_synthetic_reference.csv'
+    row_limit: 50
+    id_column: 'url'
+
+evaluation:
+ run_directory: 'inference/'
+
+generation:
+  temperature:  0
+  top_k:  40
+  top_p:  .95
+  min_p:  0.05
+  n_ctx: 11352 # estimated from input data
+  truncate: True
+
+prompt_alignment:
+  context_file_directory:  "golden_datasets/context/"
+  task_definitions:  "golden_datasets/tests/browser_tasks.yaml"
+  max_tokens: 300
+
+system:
+  n_threads:  3
+
+summarization:
+  system: "You are a helpful AI assistant"
+  user: '''Please summarize the following web page text using precise and concise language. Maintain the meaning and factual accuracy. # Web Page Text: '''
+  max_tokens: 100
+
+
+
+
